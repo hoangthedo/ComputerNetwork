@@ -83,6 +83,7 @@ public class XMLProtocol {
 	            return null;
 	    }
 	}
+
 	/* Status alive */
 	public String alive(String userName, String status){
 		try{
