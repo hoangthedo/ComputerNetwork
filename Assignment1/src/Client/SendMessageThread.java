@@ -18,7 +18,7 @@ public class SendMessageThread extends Thread{
 	@Override
 	public void run() {
 		try {
-			
+			//Gửi messenge đi
 			sender = new DataOutputStream(socket.getOutputStream());
 			
 				String send = protocol.messageToXML(msg);

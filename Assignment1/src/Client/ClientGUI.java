@@ -55,17 +55,14 @@ public class ClientGUI extends JFrame{
 					if (size<150*1024*1024)
 					{
 						share.send(new XMLProtocol().fileRequest(file.getName()));
-						
-						//share.sendfile(filepath);
+
 						textFieldMess.setText("");
-						//txtrMsg.append("Bạn gửi tập tin thành công \n");
 						Sender = false;
 					}
 					else 
 					{
 						Sender = false;
-						textFieldMess.setText("");
-						//txtrMsg.append("File is size too large\n");
+						textFieldMess.setText("File is size too large\\n");
 					}
 							
 				}
@@ -130,6 +127,12 @@ public class ClientGUI extends JFrame{
 		});
 		getContentPane().add(btnOnline);
 		frame = this;
+		this.addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override
+			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				sendMessage("Out");
+			}
+		});
 	}	
 	public void actionChooseFile(){
 
@@ -162,7 +165,12 @@ public class ClientGUI extends JFrame{
 		sender.start();
 		textFieldMess.setText("");
 	}
-
+	public void sendMessage(String a)
+	{
+		sender = new SendMessageThread(client, a);
+		sender.start();
+		textFieldMess.setText("");
+	}
 	public javax.swing.JButton btnSend;
     public javax.swing.JButton btnLinkSend;
     public javax.swing.JTextField textFieldMess;
@@ -172,15 +180,12 @@ public class ClientGUI extends JFrame{
     SharedFile share;
     private SendMessageThread sender = null;
     private RecieveMessageThread reciever = null;
-  //private JFrame frame;
   	public Socket client;
-    //public int port;
 
 
   //  public Thread clientThread;
     public File file;
 
-    public String filepath;
     public boolean Sender = false;
 
     private UserStatusGUI frmStt;

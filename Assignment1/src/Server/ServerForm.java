@@ -34,7 +34,7 @@ public class ServerForm extends JFrame{
 	protected DefaultTableModel tableuseronl ;
 	JList<String> list;
 	JScrollPane scrollPane;
-
+	JLabel listuser_onl;
 	/**
 	 * Launch the application.
 	 */
@@ -74,8 +74,8 @@ public class ServerForm extends JFrame{
 		tableuseronl.addColumn("ip");
 		tableuseronl.addColumn("port");
 		
-		frame = new JFrame();
-		frame.setBounds(100, 100, 508, 393);
+		frame = new JFrame("Server");
+		frame.setBounds(100, 100, 600, 350);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		SpringLayout springLayout = new SpringLayout();
 		frame.getContentPane().setLayout(springLayout);
@@ -93,14 +93,6 @@ public class ServerForm extends JFrame{
 		springLayout.putConstraint(SpringLayout.WEST, lblDatafile, 27, SpringLayout.WEST, frame.getContentPane());
 		frame.getContentPane().add(lblDatafile);
 		
-		txtFile = new JTextField();
-		txtFile.setEditable(false);
-		springLayout.putConstraint(SpringLayout.NORTH, txtFile, 0, SpringLayout.NORTH, lblDatafile);
-		springLayout.putConstraint(SpringLayout.WEST, txtFile, 6, SpringLayout.EAST, lblDatafile);
-		springLayout.putConstraint(SpringLayout.EAST, txtFile, 0, SpringLayout.EAST, lblServer);
-		frame.getContentPane().add(txtFile);
-		txtFile.setColumns(10);
-		
 		JButton btnBrowse = new JButton("Browse");
 		btnBrowse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -117,7 +109,15 @@ public class ServerForm extends JFrame{
 		springLayout.putConstraint(SpringLayout.EAST, btnBrowse, -123, SpringLayout.EAST, frame.getContentPane());
 		btnBrowse.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		frame.getContentPane().add(btnBrowse);
-		
+
+		txtFile = new JTextField();
+		txtFile.setEditable(false);
+		springLayout.putConstraint(SpringLayout.NORTH, txtFile, 0, SpringLayout.NORTH, lblDatafile);
+		springLayout.putConstraint(SpringLayout.WEST, txtFile, 6, SpringLayout.EAST, lblDatafile);
+		springLayout.putConstraint(SpringLayout.EAST, txtFile, -5, SpringLayout.WEST, btnBrowse);
+		frame.getContentPane().add(txtFile);
+		txtFile.setColumns(10);
+
 		JButton btnStart = new JButton("Start");
 		btnStart.addMouseListener(new MouseAdapter() {
 			@Override
@@ -164,12 +164,20 @@ public class ServerForm extends JFrame{
 
 
 		txtArea = new JTextArea();
-		springLayout.putConstraint(SpringLayout.SOUTH, btnStart, -29, SpringLayout.NORTH, txtArea);
+		JScrollPane txtScoll = new JScrollPane(txtArea);
+		springLayout.putConstraint(SpringLayout.SOUTH, btnStart, -29, SpringLayout.NORTH, txtScoll);
+		springLayout.putConstraint(SpringLayout.NORTH, txtScoll, 29, SpringLayout.SOUTH, btnBrowse);
+		springLayout.putConstraint(SpringLayout.WEST, txtScoll, 27, SpringLayout.WEST, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, txtScoll, 200, SpringLayout.SOUTH, lblDatafile);
+		springLayout.putConstraint(SpringLayout.EAST, txtScoll, -100, SpringLayout.EAST, btnStart);
+		frame.getContentPane().add(txtScoll);
+
+		/*springLayout.putConstraint(SpringLayout.SOUTH, btnStart, -29, SpringLayout.NORTH, txtArea);
 		springLayout.putConstraint(SpringLayout.NORTH, txtArea, 29, SpringLayout.SOUTH, btnBrowse);
 		springLayout.putConstraint(SpringLayout.WEST, txtArea, 27, SpringLayout.WEST, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.SOUTH, txtArea, 200, SpringLayout.SOUTH, lblDatafile);
 		springLayout.putConstraint(SpringLayout.EAST, txtArea, -100, SpringLayout.EAST, btnStart);
-		frame.getContentPane().add(txtArea);
+		frame.getContentPane().add(txtArea);*/
 
 		JLabel Show_data = new JLabel("Show data");
 		springLayout.putConstraint(SpringLayout.NORTH, Show_data,-20 , SpringLayout.NORTH, txtArea);
@@ -177,23 +185,23 @@ public class ServerForm extends JFrame{
 		lblServer.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		frame.getContentPane().add(Show_data);
 
-		JLabel listuser_onl =  new JLabel("User Online");
+		listuser_onl =  new JLabel("User Online: 0");
 		springLayout.putConstraint(SpringLayout.SOUTH, listuser_onl, 35, SpringLayout.SOUTH, btnStart);
-		springLayout.putConstraint(SpringLayout.EAST, listuser_onl, -50, SpringLayout.EAST, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, listuser_onl, -40, SpringLayout.EAST, frame.getContentPane());
 		lblServer.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		frame.getContentPane().add(listuser_onl);
 
 
         scrollPane = new JScrollPane();
-        springLayout.putConstraint(SpringLayout.NORTH, scrollPane, -150, SpringLayout.SOUTH, txtArea);
+        springLayout.putConstraint(SpringLayout.NORTH, scrollPane, -150, SpringLayout.SOUTH, txtScoll);
         springLayout.putConstraint(SpringLayout.WEST, scrollPane, -106, SpringLayout.EAST, frame.getContentPane());
         springLayout.putConstraint(SpringLayout.EAST, scrollPane, 0, SpringLayout.EAST, btnStart);
-        scrollPane.setSize(new Dimension(200, 180));
+        scrollPane.setSize(new Dimension(106, 300));
         //springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, -45, SpringLayout.SOUTH, getContentPane());
         frame.getContentPane().add(scrollPane);
 
         list = new JList<String>();
-        list.setSize(new Dimension(106, 142));
+        list.setSize(new Dimension(106, 300));
         list.setEnabled(false);
         scrollPane.setViewportView(list);
 	}
@@ -210,10 +218,10 @@ public class ServerForm extends JFrame{
 			}catch(Exception e){}
 
 			DefaultListModel<String> tmp = new DefaultListModel<String>();
-
+			listuser_onl.setText("User Online: "+ta.getRowCount());
 			list.setModel(tmp);
 			if (ta.getRowCount()==0){
-				tmp.addElement("0");
+				tmp.addElement("");
 			}else{
 				for (int i = 0; i < ta.getRowCount(); i++){
 					tmp.addElement(ta.getValueAt(i, 0).toString());

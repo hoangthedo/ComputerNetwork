@@ -17,7 +17,7 @@ public class SendStatusClient implements Runnable{
 			Boolean d = true;
 			while(d){
 				send = new DataOutputStream(socket.getOutputStream());
-				
+				//Xét user đó hoạt động
 				XMLProtocol protocol = new XMLProtocol();
 				String strSend = protocol.alive(username, "ALIVE");
 				send.writeUTF(strSend);

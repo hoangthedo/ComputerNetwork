@@ -23,6 +23,7 @@ public class ClientChatThread implements Runnable{
 			XMLProtocol proto = new XMLProtocol();
 			//Xét messenger có là chấp nhận chat không
 			if (!aod.equals(proto.chatDeny())){
+				//Form chat
 				ClientGUI client = new ClientGUI(frmStt);
 				//thiết lập liên kết với user còn lại có tên là userchat
 				client.connect(socket,sFile, userChat);

@@ -377,7 +377,7 @@ public class XMLProtocol {
 	    }
 	}
 	/*
-	 * Chuyen message dang string thanh XML
+	 * Chuyen message dang string thanh XML dang <CHAT_MSG> <CHAT_MSG/>
 	 * */
 	public String messageToXML(String message){
 		String convertMess = addEscape(message);
@@ -423,6 +423,7 @@ public class XMLProtocol {
 	            return null;
 	    }
 	}
+	//Thêm dấu <>
 	private String addEscape(String message){
 		int index = 0;
 		while(message.indexOf('<',index)>-1){
@@ -442,6 +443,7 @@ public class XMLProtocol {
 		}
 		return message;
 	}
+	//Xóa dấu <>
 	private String remoteEscape(String message){
 		int index = 0;
 		while(message.indexOf('<',index)>-1){
@@ -463,7 +465,7 @@ public class XMLProtocol {
 	}
 	
 	/*
-	 * File
+	 * yêu cầu File
 	 * */
 	public String fileRequest(String fileName){
 		try{
@@ -486,6 +488,7 @@ public class XMLProtocol {
 	            return null;
 	    }
 	}
+	// Yêu cầu nhận file không được chấp nhận
 	public String fileRequestNoAck(){
 		try{
 			 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -506,6 +509,7 @@ public class XMLProtocol {
 	            return null;
 	    }
 	}
+	//Yêu cầu nhận file được chấp nhận
 	public String fileRequestAck(String port){
 		try{
 			 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -529,6 +533,7 @@ public class XMLProtocol {
 	            return null;
 	    }
 	}
+	//Bắt đầu chuyển file sang người kia
 	public String fileDataBegin(){
 		try{
 			 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -549,45 +554,5 @@ public class XMLProtocol {
 	            return null;
 	    }
 	}
-	public String fileData(String content){
-		try{
-			 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-	         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-	         Document doc = docBuilder.newDocument();
-	         
-	         Element file = doc.createElement("FILE_DATA");
-	         file.setTextContent(content);
-	         doc.appendChild(file);
-	        
-	         return documentToString(doc);
-		}
-		catch(ParserConfigurationException | DOMException ex) {
-	            ex.printStackTrace();
-	            return null;
-	     } 
-		catch (Exception ex) {
-	            Logger.getLogger(XMLProtocol.class.getName()).log(Level.SEVERE, null, ex);
-	            return null;
-	    }
-	}
-	public String fileDataEnd(){
-		try{
-			 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-	         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-	         Document doc = docBuilder.newDocument();
-	         
-	         Element file = doc.createElement("FILE_DATA_END");
-	         doc.appendChild(file);
-	        
-	         return documentToString(doc);
-		}
-		catch(ParserConfigurationException | DOMException ex) {
-	            ex.printStackTrace();
-	            return null;
-	     } 
-		catch (Exception ex) {
-	            Logger.getLogger(XMLProtocol.class.getName()).log(Level.SEVERE, null, ex);
-	            return null;
-	    }
-	}
+
 }

@@ -53,7 +53,7 @@ public class SharedFile  extends Thread {
 					
 					Document doc = docBuilder.parse(new InputSource(new StringReader(message)));
 					doc.getDocumentElement().normalize();
-					
+				//Xử lý yêu cầu nhận file
 				if(doc.getDocumentElement().getNodeName().equals("FILE_REQ")) {
 					
                     filename = doc.getDocumentElement().getFirstChild().getTextContent();
@@ -83,6 +83,7 @@ public class SharedFile  extends Thread {
                     JFileChooser jf = new JFileChooser();
                     jf.setSelectedFile(new File(filename));
                     int returnVal = jf.showSaveDialog(frame);
+                    //Lưu đường dẫn để lưu file nhận được
                     saveTo = jf.getSelectedFile().getPath();
                     @SuppressWarnings("resource")
 					FileOutputStream Out = new FileOutputStream(saveTo);
@@ -113,8 +114,7 @@ public class SharedFile  extends Thread {
 	    if(file != null){
             if(!file.getName().isEmpty()){
                 frame.textFieldMess.setText(file.getName());
-                filepath = file.getPath();  
-                
+                filepath = file.getPath();
             }
 	    }
 	    return file;

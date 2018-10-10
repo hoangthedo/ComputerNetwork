@@ -16,15 +16,14 @@ public class RecieveMessageThread implements Runnable{
 	public void run(){
 		try{
 			while (true){
-				//recieve = new BufferedReader(new InputStreamReader(socket.getInputStream()));//get inputstream
+				//Nhận messenge trả về từ protocol
 				recieve = new DataInputStream(socket.getInputStream());
 				String msgRecieved = null;
 				while((msgRecieved = recieve.readUTF())!= null)
 				{
-					System.out.println("Tn nhan: " + msgRecieved);
+					System.out.println("Tin nhan: " + msgRecieved);
 					String msg = protocol.XMLToMessage(msgRecieved);
 					frm.addMessage(msg, userChat);
-					//System.out.println("Tn nhan: " + msg);
 				}
 			}
 		}

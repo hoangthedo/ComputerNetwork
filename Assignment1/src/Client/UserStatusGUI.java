@@ -20,6 +20,7 @@ public class UserStatusGUI extends JFrame{
 	public JTextField txthostport;
 	private JTextField txtusername;
 	private JPasswordField pwdTxtpass;
+	JLabel listuser_onl;
 	public UserStatusGUI() {
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -29,7 +30,7 @@ public class UserStatusGUI extends JFrame{
 			}
 		});
 		setSize(new Dimension(442, 362));
-		setTitle("Start form");
+		setTitle("Client");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//socket = s;
 		Initially();
@@ -44,7 +45,7 @@ public class UserStatusGUI extends JFrame{
 		table.addColumn("ip");
 		table.addColumn("port");
 		
-		
+
 		SpringLayout springLayout = new SpringLayout();
 		getContentPane().setLayout(springLayout);
 		
@@ -84,7 +85,7 @@ public class UserStatusGUI extends JFrame{
 
 		
 		txtusername = new JTextField();
-		txtusername.setText("gg");
+		txtusername.setText("User name");
 		txtusername.setEnabled(false);
 		springLayout.putConstraint(SpringLayout.WEST, txtusername, 0, SpringLayout.WEST, txtHostname);
 		springLayout.putConstraint(SpringLayout.SOUTH, txtusername, 0, SpringLayout.SOUTH, lblUserName);
@@ -97,9 +98,9 @@ public class UserStatusGUI extends JFrame{
 		springLayout.putConstraint(SpringLayout.WEST, pwdTxtpass, 0, SpringLayout.WEST, txthostport);
 		springLayout.putConstraint(SpringLayout.EAST, pwdTxtpass, 0, SpringLayout.EAST, txthostport);
 		getContentPane().add(pwdTxtpass);
-		pwdTxtpass.setText("c");
+		pwdTxtpass.setText("username");
 
-		JLabel listuser_onl = new JLabel("User Online");
+		listuser_onl = new JLabel("User Online");
 		springLayout.putConstraint(SpringLayout.SOUTH, listuser_onl, 20, SpringLayout.SOUTH, pwdTxtpass);
 		springLayout.putConstraint(SpringLayout.WEST, listuser_onl, 5, SpringLayout.WEST, pwdTxtpass);
 		getContentPane().add(listuser_onl);
@@ -216,16 +217,17 @@ public class UserStatusGUI extends JFrame{
 				//Recieve list user online from server
 				DataInputStream recieve = new DataInputStream(socket.getInputStream());
 				String lstUser = recieve.readUTF();
+				//System.out.println(lstUser);
 				
 				if (!lstUser.equals(protocol.registerDeny()) && !lstUser.equals(protocol.loginDeny())){
-					
+					setTitle(txtusername.getText());
 					UpdateJList(lstUser);
 
 					//Create listenner to accept other chat
 					
 					roleServer = new SocketPeer(socket.getLocalPort() + 1, fff);
 					roleServer.start();
-					//Send status to server
+					//Send status to server để xét user đó là Alive
 					SendStatusClient stt = new SendStatusClient(socket, txtusername.getText(), fff);
 					stt.start();
 					
@@ -259,6 +261,7 @@ public class UserStatusGUI extends JFrame{
 			
 			XMLProtocol protocol = new XMLProtocol();
 			String stt = protocol.alive(txtusername.getText(), "OFFLINE");
+			//Truyền tín hiệu offline đến server
 			DataOutputStream dout = new DataOutputStream(socket.getOutputStream());
 			dout.writeUTF(stt);
 			dout.flush();
@@ -325,18 +328,16 @@ public class UserStatusGUI extends JFrame{
 						break;
 					}
 				}
+
+
 				String ip = table.getValueAt(index, 2).toString();
 				String port = table.getValueAt(index, 3).toString();
 				String userchat = table.getValueAt(index, 0).toString();
 
 				//Chat to client, that client is server
-				
 				Socket s = new Socket(ip.substring(1),  Integer.parseInt(port) + 1);
-				System.out.println("111"+"/n");
 				Socket sFile = new Socket(ip.substring(1),  Integer.parseInt(port) + 4);
-				System.out.println("222"+"/n");
 				DataOutputStream ddd = new DataOutputStream(s.getOutputStream());
-				System.out.println("333"+"/n");
 				ddd.writeUTF(txtusername.getText());
 				ddd.flush();
 
@@ -361,7 +362,7 @@ public class UserStatusGUI extends JFrame{
 			DefaultListModel<String> tmp = new DefaultListModel<String>();
 
 			list.setModel(tmp);
-
+			listuser_onl.setText("User Online: "+(table.getRowCount()-1));
 			for (int i = 0; i < table.getRowCount(); i++){
 				if(!table.getValueAt(i,0).toString().equals(txtusername.getText())){
 					tmp.addElement(table.getValueAt(i, 0).toString());

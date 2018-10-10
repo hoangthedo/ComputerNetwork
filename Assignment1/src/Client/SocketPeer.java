@@ -16,7 +16,7 @@ public class SocketPeer implements Runnable{
 		serverFile = new ServerSocket(port + 3);
 		this.port = port;
 		}catch(Exception e){
-			System.out.print("socket peer ham tao\n"+e.getMessage());
+			System.out.print(e.getMessage());
 		}
 		this.frmstt = frmStt;
 	}
@@ -33,13 +33,13 @@ public class SocketPeer implements Runnable{
 				String userChat = ddd.readUTF();
 				DataOutputStream buff = new DataOutputStream(socket.getOutputStream());
 				
-				String msgbox = "Client " + userChat /* + socket.getInetAddress() */ + " want to chat. Are you agree?";
+				String msgbox = "Client " + userChat + " want to chat. Are you agree?";
 				
 				int result = JOptionPane.showConfirmDialog(null, msgbox, "Information", JOptionPane.YES_NO_OPTION);
 				
 				XMLProtocol pro = new XMLProtocol();
 				String _result;
-				
+				//Nếu đồng ý chat
 				if (result == 0){
 					_result = pro.chatAccept();
 					buff.writeUTF(_result);
