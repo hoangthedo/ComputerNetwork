@@ -83,33 +83,6 @@ public class XMLProtocol {
 	            return null;
 	    }
 	}
-	public String logOut(String userName, String status){
-		try{
-			 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-	         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-	         Document doc = docBuilder.newDocument();
-	         
-	         Element logout = doc.createElement("PEER_KEEP_ALIVE");
-	         doc.appendChild(logout);
-	         Element user = doc.createElement("USER_NAME");
-	         user.setTextContent(userName);
-	         logout.appendChild(user);
-	         Element _status = doc.createElement("STATUS");
-	         _status.setTextContent(status);
-	         logout.appendChild(_status);
-	         
-	         return documentToString(doc);
-		}
-		catch(ParserConfigurationException | DOMException ex) {
-	            ex.printStackTrace();
-	            return null;
-	     } 
-		catch (Exception ex) {
-	            Logger.getLogger(XMLProtocol.class.getName()).log(Level.SEVERE, null, ex);
-	            return null;
-	    }
-	}
-	
 	/* Status alive */
 	public String alive(String userName, String status){
 		try{
@@ -137,47 +110,7 @@ public class XMLProtocol {
 	            return null;
 	    }
 	}
-	
-	/* List XML user <SERVER_ACCEPT> */
-	public String listUser(DefaultTableModel table){
-		try{
-			 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-	         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-	         Document doc = docBuilder.newDocument();
-	         
-	         Element list = doc.createElement("SERVER_ACCEPT");
-	         doc.appendChild(list);
-	         
-	         for(int i = table.getRowCount() - 1; i>=0; i--)
-	         {
-	        	 if(table.getValueAt(i, 2)!=""){
-		        	 Element peer = doc.createElement("PEER");
-		        	 list.appendChild(peer);
-		        	 Element user = doc.createElement("USER_NAME");
-		        	 user.setTextContent(table.getValueAt(i, 0).toString());
-		        	 peer.appendChild(user);
-		        	 Element ip = doc.createElement("IP");
-		        	 ip.setTextContent(table.getValueAt(i, 2).toString());
-		        	 peer.appendChild(ip);
-		        	 Element port = doc.createElement("PORT");
-		        	 port.setTextContent(table.getValueAt(i, 3).toString());
-		        	 peer.appendChild(port);
-	        	 }
-	         }
-	         
-	         return documentToString(doc);
-		}
-		catch(ParserConfigurationException | DOMException ex) {
-				System.out.println("Loi xml2: " + ex.getMessage());
-	            ex.printStackTrace();
-	            return null;
-	     } 
-		catch (Exception ex) {
-	            Logger.getLogger(XMLProtocol.class.getName()).log(Level.SEVERE, null, ex);
-	            System.out.println("Loi xml: " + ex.getMessage());
-	            return null;
-	    }
-	}
+
 	public DefaultTableModel parseString(String s) throws Exception{
 		DefaultTableModel table = new DefaultTableModel();
 		table.addColumn("username");
@@ -333,49 +266,7 @@ public class XMLProtocol {
 	            return null;
 	    }
 	}
-	public String chatClose(){
-		try{
-			 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-	         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-	         Document doc = docBuilder.newDocument();
-	         
-	         Element file = doc.createElement("CHAT_CLOSE");
-	         doc.appendChild(file);
-	        
-	         return documentToString(doc);
-		}
-		catch(ParserConfigurationException | DOMException ex) {
-	            ex.printStackTrace();
-	            return null;
-	     } 
-		catch (Exception ex) {
-	            Logger.getLogger(XMLProtocol.class.getName()).log(Level.SEVERE, null, ex);
-	            return null;
-	    }
-	}
-	public String chatRequest(String userName){
-		try{
-			 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-	         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-	         Document doc = docBuilder.newDocument();
-	         
-	         Element chat = doc.createElement("CHAT_REQ");
-	         doc.appendChild(chat);
-	         Element user = doc.createElement("USER_NAME");
-	         user.setTextContent(userName);
-	         chat.appendChild(user);
-	         
-	         return documentToString(doc);
-		}
-		catch(ParserConfigurationException | DOMException ex) {
-	            ex.printStackTrace();
-	            return null;
-	     } 
-		catch (Exception ex) {
-	            Logger.getLogger(XMLProtocol.class.getName()).log(Level.SEVERE, null, ex);
-	            return null;
-	    }
-	}
+
 	/*
 	 * Chuyen message dang string thanh XML dang <CHAT_MSG> <CHAT_MSG/>
 	 * */
